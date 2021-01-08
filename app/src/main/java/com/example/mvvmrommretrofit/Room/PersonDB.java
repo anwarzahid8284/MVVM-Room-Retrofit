@@ -11,15 +11,15 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {Person.class},version = 1)
-public abstract class AppDataBase extends RoomDatabase {
+public abstract class PersonDB extends RoomDatabase {
     private static final String DATABASE_NAME="database";
     public abstract PersonDao personDao();
-    private static volatile   AppDataBase DATABASE_INSTANCE;
+    private static volatile PersonDB DATABASE_INSTANCE;
 
-    public static AppDataBase getInstance(Context context){
+    public static PersonDB getInstance(Context context){
         if(DATABASE_INSTANCE==null){
-            synchronized (AppDataBase.class){
-                DATABASE_INSTANCE= Room.databaseBuilder(context,AppDataBase.class,DATABASE_NAME)
+            synchronized (PersonDB.class){
+                DATABASE_INSTANCE= Room.databaseBuilder(context, PersonDB.class,DATABASE_NAME)
                         .addCallback(callback)
                         .build();
             }
@@ -34,8 +34,8 @@ public abstract class AppDataBase extends RoomDatabase {
     };
     public static class PopulateData extends AsyncTask<Void,Void,Void> {
         public PersonDao personDao;
-        public PopulateData(AppDataBase appDataBase){
-            personDao=appDataBase.personDao();
+        public PopulateData(PersonDB personDB){
+            personDao= personDB.personDao();
         }
 
         @Override
